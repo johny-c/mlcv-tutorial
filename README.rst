@@ -1,5 +1,6 @@
 .. -*- mode: rst -*-
 
+|Travis|_
 
 .. |Travis| image:: https://api.travis-ci.org/johny-c/mlcv-tutorial.svg?branch=master
 .. _Travis: https://travis-ci.org/johny-c/mlcv-tutorial
