@@ -1,14 +1,15 @@
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+from sklearn.base import BaseEstimator
 
 
-class Solution:
+class Solution(BaseEstimator):
     def __init__(self, **algorithm_params):
         pass
 
     def _validate_training_inputs(self, X, y=None):
-        """Validate X and y and make sure they are compatible with the
+        """Validate X and y and make sure they are compatible with the model
         parameters passed to __init__.
 
         Parameters
@@ -46,8 +47,7 @@ class Solution:
         return self
 
     def _validate_testing_inputs(self, X):
-        """Validate X and make sure it is compatible with the parameters
-        passed to __init__.
+        """Validate X and make sure it is compatible with the model parameters.
 
         Parameters
         ----------
@@ -135,7 +135,7 @@ class Solution:
     def print_progress(self, **kwargs):
         pass
 
-    def preprocess_inputs(X, y):
+    def preprocess_inputs(self, X, y):
         """
 
         Parameters
@@ -156,12 +156,6 @@ class Solution:
 
         """
         pass
-
-    def __repr__(self):
-        s = self.__class__.__name__ + '(\n'
-        param_pairs = [k + '=' + str(v) for k, v in self.__dict__.items()]
-        s += ', '.join(param_pairs)
-        return s + ')'
 
 
 def main():
