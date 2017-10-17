@@ -1,7 +1,12 @@
 import numpy as np
 import os
+from sklearn import datasets
 
 DATA_DIR = os.path.split(__file__)[0]
+
+
+def load_iris():
+    return datasets.load_iris(return_X_y=True)
 
 
 def load_banknote():
