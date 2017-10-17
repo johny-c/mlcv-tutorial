@@ -2,7 +2,7 @@ import numpy as np
 import os
 from sklearn import datasets
 
-DATA_DIR = os.path.split(__file__)[0]
+DATA_DIR = os.path.split(os.path.realpath(__file__))[0]
 
 
 def load_iris():
