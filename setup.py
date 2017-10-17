@@ -23,7 +23,7 @@ if __name__ == '__main__':
         url='https://github.com/johny-c/mlcv-tutorial.git',
         author='John Chiotellis',
         author_email='johnyc.code@gmail.com',
-        license='new BSD',
+        license='GPLv3',
 
         classifiers=[
                     'Development Status :: 4 - Beta',
@@ -43,6 +43,7 @@ if __name__ == '__main__':
                           'scipy>=0.19',
                           'scikit_learn>=0.19',
                           'pandas>=0.20',
+                          'requests>=2.14'
                           'matplotlib>=2.0',
                           'seaborn>=0.8'],
 

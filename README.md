@@ -8,5 +8,6 @@ versions of the following packages:
 * scipy
 * scikit-learn
 * pandas
+* requests
 * matplotlib
 * seaborn
