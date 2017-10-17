@@ -1,68 +1,81 @@
+.. -*- mode: rst -*-
+
+
+.. |Travis| image:: https://api.travis-ci.org/mlcv-tutorial/mlcv-tutorial.svg?branch=master
+.. _Travis: https://travis-ci.org/mlcv-tutorial/mlcv-tutorial
+
 mlcv-tutorial
 ===============
 
-Assisting library for the ML4CV tutorial.
+Assisting library for the ML4CV tutorial based on scikit-learn.
 
 It is recommended to use Python 3.6 in a virtual environment and install the 
 latest stable versions of the following packages:
 
-* numpy
-* scipy
-* scikit-learn
-* pandas
-* requests
-* matplotlib
-* seaborn
+Installation
+------------
+
+Dependencies
+~~~~~~~~~~~~
+
+mlcv-tutorial requires:
+
+- numpy (>= 1.13.3)
+- scipy (>= 0.19.1)
+- scikit-learn (>=0.19.0)
+- requests (>=2.14.2)
+- matplotlib (>=2.0.2)
+
+
+User installation
+~~~~~~~~~~~~~~~~~
+
+
+1. Create a virtual environment. If you use ``pip``::
+
+    python3 -m venv /path/to/new/virtual/environment_name
+    
+or if you use ``conda``::
+
+    conda create -n environment_name python=3.6 anaconda
+
+2. Enter the virtual environment::
+
+    source activate environment_name
+
+3. Install or update the package::
+
+    pip install --upgrade git+http://github.com/johny-c/mlcv-tutorial.git
+
+4. To exit the virtual environment::
+
+    source deactivate
 
 Usage
------
+~~~~~
 
-1. Create a virtual environment:
-
-    `python3 -m venv /path/to/new/virtual/environment_name` (if you use pip)
-    
-    `conda create -n environment_name python=3.6 anaconda` (if you use conda)
-
-2. Enter the virtual environment:
-
-    `source activate environment_name`
-
-3. Install or update the package:
-
-    `pip install --upgrade git+http://github.com/johny-c/mlcv-tutorial.git --user`
-
-
-4. Import the package and use it in some of your work.
+Enter the virtual environment where you installed the package. Open a
+python script, import the package and use it in some of your work.
 
 .. code-block:: python
 
-    from mlcv.datasets import fetcher
-    from mlcv.examples.nearest_neighbors import KNNClassifier
-    from sklearn.model_selection import train_test_split
+    from mlcv.templates.base import Solution
 
-    # Load a data set
-    X, y = fetcher.load_iris()
+    class MyEstimator(Solution):
 
-    # Split in train and test set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
+        def __init__(param1=3, param2='gaussian'):
+            self.param1 = param1
+            self.param2 = param2
 
-    # Instantiate a model you want to use (learn)
-    knn = KNNClassifier(k=3)
+        def fit(X, y):
+            # Train your estimator on the training inputs X and labels y
+            return self
 
-    # Train the model
-    knn.fit(X_train, y_train)
+        def predict(X):
+            # Predict targets for the given testing inputs X.
+            return y_pred
 
-    # See the parameters of the model
-    print(knn)
+        def score(y_pred, y_true):
+            # Evaluate your model
+            return accuracy
 
-    # Predict with the trained model
-    y_pred = knn.predict(X_test)
-
-    # Evaluate the trained model
-    test_acc = knn.score(y_pred, y_test)
-    print('3-nearest neighbors test accuracy: {:5.2f}%.'.format(test_acc*100))
-
-
-5. Exit the virtual environment:
-
-    `source deactivate`

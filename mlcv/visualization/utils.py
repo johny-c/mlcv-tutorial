@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.colors as colors
-import seaborn as sns; sns.set()
 
 from .config import CMAP
 

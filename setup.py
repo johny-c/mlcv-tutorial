@@ -42,10 +42,8 @@ if __name__ == '__main__':
         install_requires=['numpy>=1.13',
                           'scipy>=0.19',
                           'scikit_learn>=0.19',
-                          'pandas>=0.20',
                           'requests>=2.14'
-                          'matplotlib>=2.0',
-                          'seaborn>=0.8'],
+                          'matplotlib>=2.0'],
 
 
         test_suite='nose.collector',
