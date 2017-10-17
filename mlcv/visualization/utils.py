@@ -1,14 +1,12 @@
 import numpy as np
-import matplotlib
-import matplotlib.cm as cm
-from matplotlib.colors import to_rgba
+import matplotlib.colors as colors
 import seaborn as sns; sns.set()
 
-CMAP = cm.get_cmap('Set3')
+from .config import CMAP
 
 
-def proba_to_rgba(proba):
-    """
+def proba_to_rgba(proba, return_most_likely=False):
+    """Convert class probabilities to RGBA colors.
 
     Parameters
     ----------
@@ -23,7 +21,7 @@ def proba_to_rgba(proba):
     """
 
     n_classes = proba.shape[1]
-    norm = matplotlib.colors.Normalize(vmin=0, vmax=n_classes-1)
+    norm = colors.Normalize(vmin=0, vmax=n_classes-1)
 
     most_likely_labels = proba.argmax(axis=1)
     sample_range = np.arange(proba.shape[0])
@@ -33,4 +31,7 @@ def proba_to_rgba(proba):
     rgba = CMAP(norm(most_likely_labels))
     rgba[:, -1] = intensities
 
-    return rgba
+    if return_most_likely:
+        return rgba, most_likely_labels
+    else:
+        return rgba

@@ -2,14 +2,14 @@ import numpy as np
 import scipy.stats
 from matplotlib import pyplot as plt
 
-from sklearn.utils import check_array, check_consistent_length
+from sklearn.utils.validation import check_array, check_consistent_length
+from sklearn.utils.validation import check_is_fitted
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, LabelBinarizer
 
 from mlcv.templates.base import Solution
 from mlcv.visualization.utils import proba_to_rgba
-
 
 
 class KNNClassifier(Solution):
@@ -89,8 +89,8 @@ class KNNClassifier(Solution):
         """
         self._validate_training_inputs(X, y)
 
-        # Actually nearest neighbors does not learn anything. It just memorizes
-        # the whole training set.
+        # Actually nearest neighbors does not learn anything.
+        # It just memorizes the whole training set.
         self.X_ = X
 
         # Store a label encoder with the mapping y -> [0, n_classes)
@@ -107,7 +107,6 @@ class KNNClassifier(Solution):
 
         return self
 
-
     def _validate_testing_inputs(self, X):
         """Make sure the testing inputs are compatible.
 
@@ -123,7 +122,13 @@ class KNNClassifier(Solution):
 
         """
 
+        # Make sure the model has been trained first
+        check_is_fitted(self, ['X_', 'y_'])
+
+        # Make sure the testing inputs are in a valid format
         check_array(X)
+
+
         n_features_train = self.X_.shape[1]
         n_features_test = X.shape[1]
         if n_features_test != n_features_train:
@@ -164,7 +169,7 @@ class KNNClassifier(Solution):
         return y
 
     def predict_proba(self, X):
-        """
+        """Estimate the class probabilities for each input in X.
 
         Parameters
         ----------
@@ -182,7 +187,8 @@ class KNNClassifier(Solution):
 
         # Find the nearest neighbors in the training set
         idx_nn, dist_nn = _find_nearest_neighbors(X, self.X_, self.k,
-                                                  return_distance=True)
+                                                  return_distance=True,
+                                                  squared=False)
 
         # Probabilities can be obtained by using inverse distances as scores
         scores = np.exp(-dist_nn)
@@ -202,10 +208,13 @@ class KNNClassifier(Solution):
             one_hot_labels = self.label_binarizer_.transform(y_row)
             proba[i] = (one_hot_labels * p_row[:, None]).sum(axis=0)
 
+        # Make sure the rows still sum up to 1.0 (numerical errors)
+        proba = proba / proba.sum(axis=1)[:, None]
+
         return proba
 
     def score(self, y_pred, y_true):
-        """
+        """Classification accuracy is the ratio of correct predictions.
 
         Parameters
         ----------
@@ -224,25 +233,46 @@ class KNNClassifier(Solution):
 
         return np.equal(y_pred.ravel(), y_true.ravel()).sum() / y_pred.size
 
-
-    def visualize(self, X, rgba=None, **kwargs):
-        """
+    def visualize(self, X, proba=None, **kwargs):
+        """Scatter plot with color intensity proportional to class probability.
 
         Parameters
         ----------
         X : array, shape (n_samples, n_features)
-        colors : list of arguments
-        kwargs : dict of arguments
+            Data samples.
 
-        Returns
-        -------
+        proba : array, shape (n_samples, n_classes)
+            Class probabilities for each sample.
+
+        **kwargs : keyword arguments
+            Other Parameters.
 
         """
+        self._validate_testing_inputs(X)
+
+        # We only plot the first two dimensions
+        X = X[:, :2]
+
+        n_classes = proba.shape[1]
+
+        # Get rgba colors with tuned intensity (alpha)
+        rgba, y_pred = proba_to_rgba(proba, return_most_likely=True)
 
         # Scatter the points with color
-        # sns.pointplot(X[:, 0], X[:, 1], colors)
-        plt.scatter(X[:, 0], X[:, 1], c=rgba)
+        class_names = self.label_encoder_.classes_
 
+        class_handles = []
+        for i in range(n_classes):
+            class_mask = y_pred == i
+            X_class = X[class_mask]
+            ch = plt.scatter(X_class[:, 0], X_class[:, 1], c=rgba[class_mask])
+            class_handles.append(ch)
+
+        plt.xlabel('dim 1')
+        plt.ylabel('dim 2')
+        plt.title('KNN classification')
+        plt.legend(class_handles, class_names, scatterpoints=1,
+                   loc='upper right', ncol=1, fontsize=8)
 
 
 def _find_nearest_neighbors(X, Y, k, return_distance=True, squared=False):
@@ -321,52 +351,40 @@ def _find_nearest_neighbors(X, Y, k, return_distance=True, squared=False):
     else:
         return idx
 
-# def failing_case():
-#
-#     X_train = np.array([[1., 2.], [3., 4.]])
-#     y_train = np.array([1, 0])
-#
-#     model = KNNClassifier(k=3)
-#     print(model)
-#
-#     model.fit(X_train, y_train)
 
 def main():
 
-    ## 1. Read in the data
-    # X_train = pd.read_csv('train_data.csv')
-    # y_train = pd.read_csv('train_labels.csv')
-
+    # # 1. Read in the data
     X, y = load_iris(return_X_y=True)
+
+    # 1a. Split in training and testing data
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, stratify=y, train_size=0.7, random_state=42)
 
-    # X_test = pd.read_csv('test_data.csv')
-    # y_test = pd.read_csv('test_labels.csv')
+    # # 2. Do any necessary pre-processing (e.g. mean-centering)
+    # from sklearn.preprocessing import StandardScaler
+    # preprocessor = StandardScaler(with_mean=True, with_std=False)
+    # preprocessor.fit(X_train)
+    # X_train = preprocessor.transform(X_train)
+    # X_test = preprocessor.transform(X_test)
 
-    ## 2. Do any necessary pre-processing (e.g. mean-centering)
-    # X_train, y_train = preprocess_inputs(X_train, y_train)
-    # X_test, y_test = preprocess_inputs(X_test, y_test)
-
-    # 3. Initialize your model (set the (hyper-) parameters)
+    # # 3. Initialize your model (set the (hyper-) parameters)
     model = KNNClassifier(k=3)
     print(model)
 
-    # 4. Make sure your parameters and your inputs are valid and compatible.
-    # model._validate_training_inputs(X_train, y_train)
-    # model.validate_input(X_test, y_test)
-
-    ## 5. Fit your model with the training data (That's the meat...)
+    # # 4. Fit your model with the training data (This is the meat.)
     model.fit(X_train, y_train)
 
-    ## 6. Evaluate your model on some testing data (See what you learned.)
+    # # 5. Evaluate your model on testing data (See what you learned.)
     y_pred = model.predict(X_test)
-    model_score = model.score(y_pred, y_test)
-    print('Accuracy on test set: {:5.2f}%.'.format(100 * model_score))
+    test_accuracy = model.score(y_pred, y_test)
+    print('Accuracy on {} test samples: {:5.2f}%.'
+          .format(len(y_test), 100 * test_accuracy))
 
-    ## 7. Plot something your model learned.
+    # # 6. Optionally visualize something your model learned.
+    # 6a. Scatter plot with color-coded confidences
     proba = model.predict_proba(X_test)
-    model.visualize(X_test, rgba=proba_to_rgba(proba))
+    model.visualize(X_test, proba)
     plt.show()
 
 
