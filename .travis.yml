@@ -22,8 +22,8 @@ matrix:
   include:
     # This environment tests the newest supported Anaconda release (4.4.0)
     - env: DISTRIB="conda" PYTHON_VERSION="3.6.1" INSTALL_MKL="false"
-           NUMPY_VERSION="1.13.3" SCIPY_VERSION="0.19.1" COVERAGE=false
-           SKIP_TESTS=true
+           NUMPY_VERSION="1.13.3" SCIPY_VERSION="0.19.1"
+           CYTHON_VERSION="0.25.2" COVERAGE=false SKIP_TESTS="true"
   allow_failures:
     # allow_failures seems to be keyed on the python version
     # We are using this to allow failures for DISTRIB=scipy-dev-wheels

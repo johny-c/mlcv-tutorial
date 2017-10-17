@@ -1,8 +1,8 @@
 .. -*- mode: rst -*-
 
 
-.. |Travis| image:: https://api.travis-ci.org/mlcv-tutorial/mlcv-tutorial.svg?branch=master
-.. _Travis: https://travis-ci.org/mlcv-tutorial/mlcv-tutorial
+.. |Travis| image:: https://api.travis-ci.org/johny-c/mlcv-tutorial.svg?branch=master
+.. _Travis: https://travis-ci.org/johny-c/mlcv-tutorial
 
 mlcv-tutorial
 ===============
