@@ -11,7 +11,8 @@ mlcv-tutorial
 Assisting library for the ML4CV tutorial based on scikit-learn.
 
 It is recommended to use Python 3.6 in a virtual environment and install the 
-latest stable versions of the following packages:
+latest stable versions of the dependencies. If not present,
+`mlcv-tutorial` will attempt to install them automatically.
 
 Installation
 ------------
