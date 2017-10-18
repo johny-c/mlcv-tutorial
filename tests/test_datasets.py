@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-import unittest
 import numpy as np
 
 
@@ -7,7 +6,7 @@ from mlcv.datasets import fetcher
 
 
 
-class TestFetcher(unittest.TestCase):
+class TestFetcher:
 
     def setUp(self):
         np.random.seed(0)
