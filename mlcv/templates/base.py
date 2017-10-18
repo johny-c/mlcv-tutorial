@@ -1,10 +1,16 @@
+from abc import ABC, abstractmethod
 from sklearn.base import BaseEstimator
 
 
 class Solution(BaseEstimator):
-    def __init__(self, **algorithm_params):
-        pass
+    """This is a core class, meant to be subclassed by specific estimators.
 
+        You should pass any algorithm specific parameters to the constructor
+        of your estimator (your estimator's __init__ method)
+
+    """
+
+    @abstractmethod
     def _validate_training_inputs(self, X, y=None):
         """Validate X and y and make sure they are compatible with the model
         parameters passed to __init__.
@@ -22,6 +28,7 @@ class Solution(BaseEstimator):
         """
         pass
 
+    @abstractmethod
     def fit(self, X, y=None):
         """
 
@@ -43,6 +50,7 @@ class Solution(BaseEstimator):
 
         return self
 
+    @abstractmethod
     def _validate_testing_inputs(self, X):
         """Validate X and make sure it is compatible with the model parameters.
 
@@ -58,6 +66,7 @@ class Solution(BaseEstimator):
         """
         pass
 
+    @abstractmethod
     def predict(self, X):
         """
 
@@ -92,6 +101,7 @@ class Solution(BaseEstimator):
         self._validate_testing_inputs(X)
         pass
 
+    @abstractmethod
     def score(self, y_pred, y_true):
         """
 
@@ -126,7 +136,7 @@ class Solution(BaseEstimator):
         """
         pass
 
-    def visualize_iter(self, X, *args, **kwargs):
+    def visualize_iteration(self, X, *args, **kwargs):
         pass
 
     def print_progress(self, **kwargs):
