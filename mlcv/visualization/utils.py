@@ -1,9 +1,11 @@
 import numpy as np
-import matplotlib.colors as colors
-
-from .config import CMAP
+import matplotlib.colors as mcolors
 
 
+from .config import MLCV_CMAP
+
+
+###########################################################################
 def proba_to_rgba(proba, return_most_likely=False):
     """Convert class probabilities to RGBA colors.
 
@@ -20,17 +22,19 @@ def proba_to_rgba(proba, return_most_likely=False):
     """
 
     n_classes = proba.shape[1]
-    norm = colors.Normalize(vmin=0, vmax=n_classes-1)
+    norm = mcolors.Normalize(vmin=0, vmax=n_classes-1)
 
     most_likely_labels = proba.argmax(axis=1)
     sample_range = np.arange(proba.shape[0])
     intensities = proba[sample_range, most_likely_labels]
     np.clip(intensities, 0.0, 1.0, intensities)
 
-    rgba = CMAP(norm(most_likely_labels))
+    rgba = MLCV_CMAP(norm(most_likely_labels))
     rgba[:, -1] = intensities
 
     if return_most_likely:
         return rgba, most_likely_labels
     else:
         return rgba
+
+
