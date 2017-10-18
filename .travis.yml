@@ -2,7 +2,6 @@
 sudo: false
 
 language: python
-  - "3.6"
 
 cache:
   apt: true
@@ -15,7 +14,7 @@ dist: trusty
 env:
   global:
     # Directory where tests are run from
-    - TEST_DIR=/tmp/mlcv
+    - TEST_DIR=/tmp/test_dir
     - MODULE=mlcv
     - OMP_NUM_THREADS=4
     - OPENBLAS_NUM_THREADS=4
@@ -33,7 +32,7 @@ matrix:
     # - python: 3.5
 
 install: source build_tools/travis/install.sh
-script: py.test  # bash build_tools/travis/test_script.sh
+script: bash build_tools/travis/test_script.sh
 after_success: source build_tools/travis/after_success.sh
 notifications:
   webhooks:
