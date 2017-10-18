@@ -47,5 +47,5 @@ if __name__ == '__main__':
 
 
         test_suite='nose.collector',
-        tests_require=['nose', 'nose-cover3']
+        tests_require=['pytest']
     )

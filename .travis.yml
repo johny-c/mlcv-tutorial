@@ -2,6 +2,7 @@
 sudo: false
 
 language: python
+  - "3.6"
 
 cache:
   apt: true
