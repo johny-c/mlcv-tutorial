@@ -3,6 +3,7 @@ import os
 from sklearn import datasets
 
 DATA_DIR = os.path.split(os.path.realpath(__file__))[0]
+DATASETS = ['iris', 'banknote', 'old_faithful', 'greetings']
 
 
 def load_iris():
@@ -22,8 +23,30 @@ def load_banknote():
 
 def load_old_faithful():
     data_path = os.path.join(DATA_DIR, 'old_faithful.txt')
-
-    print('Loading dataset from {}...'.format(data_path))
     X = np.loadtxt(data_path, skiprows=1, usecols=(1, 2))
 
     return X
+
+
+def load_greetings():
+    data_path = os.path.join(DATA_DIR, 'greetings.txt')
+    X = np.loadtxt(data_path, delimiter=',')
+
+    return X
+
+
+def load(dataset_name):
+
+    dataset_name = dataset_name.lower()
+    if dataset_name not in DATASETS:
+        raise ValueError('Dataset {} unknown.\nSupproted datasets:\n{}'
+                         .format(dataset_name, DATASETS))
+
+    if dataset_name == 'iris':
+        return load_iris()
+    elif dataset_name == 'banknote':
+        return load_banknote()
+    elif dataset_name == 'old_faithful':
+        return load_old_faithful()
+    elif dataset_name == 'greetings':
+        return load_greetings()

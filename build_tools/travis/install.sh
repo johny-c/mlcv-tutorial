@@ -59,6 +59,8 @@ if [[ "$DISTRIB" == "conda" ]]; then
     fi
     source activate testenv
 
+    conda install --yes nose pytest pytest-cov
+
     if [[ $USE_PYTEST != "true" ]]; then
         # Install nose-timer via pip
         pip install nose-timer
@@ -116,11 +118,4 @@ except ImportError:
     ccache --show-stats
     # Useful for debugging how ccache is used
     # cat $CCACHE_LOGFILE
-fi
-
-if [[ "$RUN_FLAKE8" == "true" ]]; then
-    # flake8 version is temporarily set to 2.5.1 because the next
-    # version available on conda (3.3.0) has a bug that checks non
-    # python files and cause non meaningful flake8 errors
-    conda install --yes flake8=2.5.1
 fi

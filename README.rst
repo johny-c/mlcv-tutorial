@@ -34,11 +34,11 @@ User installation
 
 1. Create a virtual environment. If you use ``pip``::
 
-    python3 -m venv /path/to/new/virtual/environment_name
-    
-or if you use ``conda``::
+        python3 -m venv /path/to/new/virtual/environment_name ::
 
-    conda create -n environment_name python=3.6 anaconda
+    or if you use ``conda``::
+
+        conda create -n environment_name python=3.6 anaconda
 
 2. Enter the virtual environment::
 
