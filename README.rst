@@ -46,7 +46,7 @@ User installation
 
 3. Install or update the package::
 
-    pip install --upgrade git+http://github.com/johny-c/mlcv-tutorial.git
+    pip install --upgrade git+https://github.com/johny-c/mlcv-tutorial.git
 
 4. To exit the virtual environment::
 
