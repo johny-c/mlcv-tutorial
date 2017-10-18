@@ -33,7 +33,7 @@ matrix:
     # - python: 3.5
 
 install: source build_tools/travis/install.sh
-script: bash build_tools/travis/test_script.sh
+script: py.test  # bash build_tools/travis/test_script.sh
 after_success: source build_tools/travis/after_success.sh
 notifications:
   webhooks:
