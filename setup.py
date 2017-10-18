@@ -1,8 +1,10 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 # To use a consistent encoding
 from codecs import open
 from os import path
+import sys
 
 
 __version__ = '0.0.1'
@@ -15,6 +17,18 @@ if __name__ == '__main__':
         long_description = f.read()
 
 
+    class PyTest(TestCommand):
+        def finalize_options(self):
+            TestCommand.finalize_options(self)
+            self.test_args = []
+            self.test_suite = True
+
+        def run_tests(self):
+            import pytest
+            errcode = pytest.main(self.test_args)
+            sys.exit(errcode)
+
+
     setup(
         name='mlcv-tutorial',
         version=__version__,
@@ -24,6 +38,7 @@ if __name__ == '__main__':
         author='John Chiotellis',
         author_email='johnyc.code@gmail.com',
         license='GPLv3',
+        cmdclass={'test': PyTest},
 
         classifiers=[
                     'Development Status :: 4 - Beta',
@@ -45,7 +60,7 @@ if __name__ == '__main__':
                           'requests>=2.14'
                           'matplotlib>=2.0'],
 
-
-        test_suite='nose.collector',
-        tests_require=['pytest']
+        test_suite='mlcv.tests.test_mlcv',
+        tests_require=['pytest'],
+        extras_require={'testing': ['pytest']}
     )
