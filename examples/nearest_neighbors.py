@@ -128,13 +128,12 @@ class KNNClassifier(Solution):
         # Make sure the testing inputs are in a valid format
         check_array(X)
 
-
         n_features_train = self.X_.shape[1]
         n_features_test = X.shape[1]
         if n_features_test != n_features_train:
             raise ValueError("The testing set has {} features, while the "
-                             "training set has {} features.".format(
-                n_features_test, n_features_train))
+                             "training set has {} features."
+                             .format(n_features_test, n_features_train))
 
     def predict(self, X):
         """

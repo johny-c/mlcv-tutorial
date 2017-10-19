@@ -1,11 +1,31 @@
+import sys
+
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
+
 # To use a consistent encoding
 from codecs import open
 from os import path
 
 
+
 __version__ = '0.0.1'
+
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to pytest")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = ''
+
+    def run_tests(self):
+        import shlex
+        #import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main(shlex.split(self.pytest_args))
+        sys.exit(errno)
+
 
 if __name__ == '__main__':
     here = path.abspath(path.dirname(__file__))
@@ -45,7 +65,8 @@ if __name__ == '__main__':
                           'requests>=2.14'
                           'matplotlib>=2.0'],
 
-
-        test_suite='nose.collector',
-        tests_require=['nose', 'nose-cover3']
+        cmdclass = {'test': PyTest},
+        test_suite='mlcv.tests.test_mlcv',
+        tests_require=['pytest'],
+        extras_require={'testing': ['pytest']}
     )
