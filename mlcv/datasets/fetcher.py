@@ -48,11 +48,13 @@ def load_old_faithful():
     -------
     X : array (272, 2)
 
+    y : None
+
     """
     data_path = os.path.join(DATA_DIR, 'old_faithful.txt')
     X = np.loadtxt(data_path, skiprows=1, usecols=(1, 2))
 
-    return X
+    return X, None
 
 
 def load_greetings():

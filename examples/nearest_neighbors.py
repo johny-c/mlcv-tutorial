@@ -4,8 +4,6 @@ from matplotlib import pyplot as plt
 
 from sklearn.utils.validation import check_array, check_consistent_length
 from sklearn.utils.validation import check_is_fitted
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, LabelBinarizer
 
 from mlcv.templates.base import Solution
@@ -55,9 +53,7 @@ class KNNClassifier(Solution):
         if self.k < 1:
             raise ValueError("Number of neighbors must be at least 1.")
 
-
         n_samples, n_features = X.shape
-
         if n_samples < self.k + 1:
             raise ValueError("Only {} samples given, cannot fit {} nearest "
                              "neighbors.".format(n_samples, self.k))
@@ -123,7 +119,7 @@ class KNNClassifier(Solution):
         """
 
         # Make sure the model has been trained first
-        check_is_fitted(self, ['X_', 'y_'])
+        check_is_fitted(self, attributes=['X_', 'y_'])
 
         # Make sure the testing inputs are in a valid format
         check_array(X)
@@ -349,43 +345,3 @@ def _find_nearest_neighbors(X, Y, k, return_distance=True, squared=False):
             return idx, np.sqrt(distances)
     else:
         return idx
-
-
-def main():
-
-    # # 1. Read in the data
-    X, y = load_iris(return_X_y=True)
-
-    # 1a. Split in training and testing data
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, stratify=y, train_size=0.7, random_state=42)
-
-    # # 2. Do any necessary pre-processing (e.g. mean-centering)
-    # from sklearn.preprocessing import StandardScaler
-    # preprocessor = StandardScaler(with_mean=True, with_std=False)
-    # preprocessor.fit(X_train)
-    # X_train = preprocessor.transform(X_train)
-    # X_test = preprocessor.transform(X_test)
-
-    # # 3. Initialize your model (set the (hyper-) parameters)
-    model = KNNClassifier(k=3)
-    print(model)
-
-    # # 4. Fit your model with the training data (This is the meat.)
-    model.fit(X_train, y_train)
-
-    # # 5. Evaluate your model on testing data (See what you learned.)
-    y_pred = model.predict(X_test)
-    test_accuracy = model.score(y_pred, y_test)
-    print('Accuracy on {} test samples: {:5.2f}%.'
-          .format(len(y_test), 100 * test_accuracy))
-
-    # # 6. Optionally visualize something your model learned.
-    # 6a. Scatter plot with color-coded confidences
-    proba = model.predict_proba(X_test)
-    model.visualize(X_test, proba)
-    plt.show()
-
-
-if __name__ == '__main__':
-    main()
