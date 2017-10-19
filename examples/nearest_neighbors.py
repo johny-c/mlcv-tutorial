@@ -165,7 +165,7 @@ class KNNClassifier(Solution):
         # Inverse transform the predicted labels
         y = self.label_encoder_.inverse_transform(y)
 
-        return y
+        return y.ravel()
 
     def predict_proba(self, X):
         """Estimate the class probabilities for each input in X.
