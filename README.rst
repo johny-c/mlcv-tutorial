@@ -82,3 +82,5 @@ version. Open a python script, import the package and use it in your own work!
             # Evaluate your model
             return accuracy
 
+
+Have a look at the `examples` directory for a complete use case.
