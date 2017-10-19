@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from sklearn.base import BaseEstimator
 
 
-class Solution(BaseEstimator):
+class Solution(ABC, BaseEstimator):
     """This is a core class, meant to be subclassed by specific estimators.
 
         You should pass any algorithm specific parameters to the constructor
@@ -12,13 +12,26 @@ class Solution(BaseEstimator):
 
     @abstractmethod
     def _validate_training_inputs(self, X, y=None):
-        """Validate X and y and make sure they are compatible with the model
-        parameters passed to __init__.
+        """Validate X and y.
+
+        Make sure they have the shapes you expect and make sure they are
+        compatible with the model parameters passed to __init__.
 
         Parameters
         ----------
         X : array, shape (n_samples, n_features)
-        y : array, shape (n_samples, ?)
+            User supplied training data.
+
+        y : array, shape (n_samples, ?) (optional)
+            User supplied training targets.
+
+        Returns
+        -------
+        X_validated : array, shape (n_samples, n_features)
+            Validated training data.
+
+        y_validated : array, shape (n_samples, ?)
+            Validated training targets.
 
         Raises
         ------
@@ -30,7 +43,7 @@ class Solution(BaseEstimator):
 
     @abstractmethod
     def fit(self, X, y=None):
-        """
+        """Fit your model with the training data.
 
         Parameters
         ----------
@@ -42,13 +55,11 @@ class Solution(BaseEstimator):
 
         Returns
         -------
-        solution : Solution
-            A trained model.
+        self : Solution
+            A trained model instance.
 
         """
-        self._validate_training_inputs(X, y)
-
-        return self
+        pass
 
     @abstractmethod
     def _validate_testing_inputs(self, X):
@@ -57,7 +68,12 @@ class Solution(BaseEstimator):
         Parameters
         ----------
         X : array, shape (n_samples, n_features)
+            User supplied testing data.
 
+        Returns
+        -------
+        X_validated : array, shape (n_samples, n_features)
+            Validated testing data.
         Raises
         ------
         ValueError : If the inputs or the parameters do not match the expected
@@ -68,7 +84,7 @@ class Solution(BaseEstimator):
 
     @abstractmethod
     def predict(self, X):
-        """
+        """Predict with your trained model on unseen input data.
 
         Parameters
         ----------
@@ -80,12 +96,16 @@ class Solution(BaseEstimator):
         y : array, shape(n_samples_test, ?)
             A prediction for each testing input.
 
+        Raises
+        ------
+        NotFittedError : If your model has not been trained before,
+        you should not be able to predict with it.
+
         """
-        self._validate_testing_inputs(X)
         pass
 
     def predict_proba(self, X):
-        """
+        """Predict target probabilities for each testing input.
 
         Parameters
         ----------
@@ -94,8 +114,8 @@ class Solution(BaseEstimator):
 
         Returns
         -------
-        y : array, shape(n_samples_test, n_classes)
-            A class probability distribution for each testing input.
+        y : array, shape(n_samples_test, n_target_set)
+            A probability distribution for each testing input.
 
         """
         self._validate_testing_inputs(X)
@@ -103,7 +123,7 @@ class Solution(BaseEstimator):
 
     @abstractmethod
     def score(self, y_pred, y_true):
-        """
+        """Return a single number that reflects the quality of your model.
 
         Parameters
         ----------
@@ -122,18 +142,6 @@ class Solution(BaseEstimator):
         pass
 
     def visualize(self, X, *args, **kwargs):
-        """
-
-        Parameters
-        ----------
-        X :
-        args :
-        kwargs :
-
-        Returns
-        -------
-
-        """
         pass
 
     def visualize_iteration(self, X, *args, **kwargs):
