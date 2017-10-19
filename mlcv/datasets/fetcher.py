@@ -32,7 +32,7 @@ def load_greetings():
     data_path = os.path.join(DATA_DIR, 'greetings.txt')
     X = np.loadtxt(data_path, delimiter=',')
 
-    return X
+    return X, None
 
 
 def load(dataset_name):
