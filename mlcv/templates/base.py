@@ -1,14 +1,18 @@
-from abc import ABC, abstractmethod
+from abc import ABCMeta, abstractmethod
+from sklearn.externals import six
 from sklearn.base import BaseEstimator
 
 
-class Solution(ABC, BaseEstimator):
-    """This is a core class, meant to be subclassed by specific estimators.
+class Solution(six.with_metaclass(ABCMeta, BaseEstimator)):
+    """This is a core class, meant to be subclassed by specific estimators."""
 
+    @abstractmethod
+    def __init__(self):
+        """
         You should pass any algorithm specific parameters to the constructor
         of your estimator (your estimator's __init__ method)
-
-    """
+        """
+        pass
 
     @abstractmethod
     def _validate_training_inputs(self, X, y=None):
