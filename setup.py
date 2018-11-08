@@ -62,7 +62,7 @@ if __name__ == '__main__':
         install_requires=['numpy>=1.13',
                           'scipy>=0.19',
                           'scikit_learn>=0.19',
-                          'requests>=2.14'
+                          'requests>=2.20'
                           'matplotlib>=2.0'],
 
         cmdclass = {'test': PyTest},
