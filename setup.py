@@ -63,7 +63,9 @@ if __name__ == '__main__':
                           'scipy>=0.19',
                           'scikit_learn>=0.19',
                           'requests>=2.20',
-                          'matplotlib>=2.0'],
+                          'matplotlib>=2.0',
+                          'six>=1.14'
+                          ],
 
         cmdclass = {'test': PyTest},
         test_suite='mlcv.tests.test_mlcv',
